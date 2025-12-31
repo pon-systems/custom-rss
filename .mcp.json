@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "byebye-docs": {
+      "command": "byebye-docs",
+      "env": {
+        "BYEBYE_DOCS_PROJECT_PATH": "."
+      }
+    }
+  }
+}

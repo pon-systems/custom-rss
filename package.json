@@ -1,0 +1,34 @@
+{
+  "name": "security-rss-feed",
+  "version": "1.0.0",
+  "description": "セキュリティ関連記事を自動収集してカスタムRSSフィードを生成するシステム",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "feed-generate": "tsx src/scripts/generate-feeds.ts",
+    "site-build": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts",
+    "site-serve": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts --serve",
+    "dev": "npm run feed-generate && npm run site-serve",
+    "build": "npm run feed-generate && npm run site-build"
+  },
+  "keywords": [
+    "security",
+    "rss",
+    "feed",
+    "aggregator"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "feed": "^4.2.2",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

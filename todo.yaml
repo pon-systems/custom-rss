@@ -1,0 +1,23 @@
+# Sebastian TODO Master File
+# Auto-generated - Do not edit manually
+
+metadata:
+  lastUpdated: '2025-12-31T22:27:41.352Z'
+  version: 1
+stats:
+  total: 1
+  completed: 0
+  pending: 1
+  overdue: 0
+  dueToday: 0
+  highPriority: 0
+todos:
+  - id: kwcq
+    content: Make sure that all of these items are documented (classes aren't,
+    completed: false
+    priority: medium
+    source:
+      file: node_modules/semver/README.md
+      line: 611
+    tags: []
+    createdAt: '2025-12-31T22:27:41.342Z'

@@ -1,0 +1,55 @@
+---
+layout: layout.njk
+title: フィード一覧
+---
+
+<div class="card">
+  <h2>利用可能なRSSフィード</h2>
+  <p style="margin-bottom: 1rem; color: var(--text-muted);">以下のRSSフィードをお好みのRSSリーダーで購読できます。</p>
+
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr style="border-bottom: 2px solid var(--border-color);">
+        <th style="text-align: left; padding: 0.75rem 0;">フィード名</th>
+        <th style="text-align: left; padding: 0.75rem 0;">説明</th>
+        <th style="text-align: right; padding: 0.75rem 0;">購読</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 1px solid var(--border-color);">
+        <td style="padding: 0.75rem 0; font-weight: 500;">全体フィード</td>
+        <td style="padding: 0.75rem 0; color: var(--text-muted);">すべてのカテゴリの記事（最新100件）</td>
+        <td style="padding: 0.75rem 0; text-align: right;">
+          <a href="/feeds/all.xml" class="feed-link">RSS</a>
+        </td>
+      </tr>
+      {% for category in feed.categories %}
+      <tr style="border-bottom: 1px solid var(--border-color);">
+        <td style="padding: 0.75rem 0; font-weight: 500;">{{ category.label }}</td>
+        <td style="padding: 0.75rem 0; color: var(--text-muted);">{{ category.articleCount }}件の記事</td>
+        <td style="padding: 0.75rem 0; text-align: right;">
+          <a href="/feeds/{{ category.id }}.xml" class="feed-link secondary">RSS</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>情報源一覧</h2>
+  <p style="margin-bottom: 1rem; color: var(--text-muted);">以下のサイトから記事を収集しています。</p>
+
+  {% for category in feed.categories %}
+  <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1rem;">{{ category.label }}</h3>
+  <ul style="list-style: disc; padding-left: 1.5rem;">
+    {% for source in feed.feeds %}
+      {% if source.category == category.id %}
+      <li style="margin-bottom: 0.5rem;">
+        <a href="{{ source.url }}" target="_blank" rel="noopener" style="color: var(--primary-color);">{{ source.name }}</a>
+      </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</div>
