@@ -9,14 +9,8 @@ export const SECURITY_FEED_LIST: FeedInfo[] = [
   // 公的機関
   {
     name: 'IPA 重要なセキュリティ情報',
-    url: 'https://www.ipa.go.jp/security/security-alert/',
-    feedUrl: 'https://www.ipa.go.jp/security/rss/alert.rdf',
-    category: 'official',
-  },
-  {
-    name: 'IPA 新着情報',
     url: 'https://www.ipa.go.jp/security/',
-    feedUrl: 'https://www.ipa.go.jp/security/rss/info.rdf',
+    feedUrl: 'https://www.ipa.go.jp/security/alert-rss.rdf',
     category: 'official',
   },
   {
@@ -48,9 +42,15 @@ export const SECURITY_FEED_LIST: FeedInfo[] = [
 
   // ベンダー
   {
-    name: 'トレンドマイクロ セキュリティブログ',
-    url: 'https://blog.trendmicro.co.jp/',
-    feedUrl: 'https://blog.trendmicro.co.jp/feed/',
+    name: 'トレンドマイクロ ウイルス解析ブログ',
+    url: 'https://www.trendmicro.com/ja_jp/research.html',
+    feedUrl: 'http://feeds.feedburner.com/tm-security-blog',
+    category: 'vendor',
+  },
+  {
+    name: 'トレンドマイクロ セキュリティホール情報',
+    url: 'https://www.trendmicro.com/ja_jp/download/rss.html',
+    feedUrl: 'http://feeds.trendmicro.com/jp/SecurityAdvisories',
     category: 'vendor',
   },
 
