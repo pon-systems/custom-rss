@@ -33,6 +33,7 @@ export default function (eleventyConfig: UserConfig) {
   });
 
   return {
+    pathPrefix: '/custom-rss/',
     dir: {
       input: 'src/site',
       output: '_site',

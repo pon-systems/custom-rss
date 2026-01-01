@@ -7,9 +7,9 @@ title: ホーム
   <h2>RSSフィードを購読</h2>
   <p style="margin-bottom: 1rem; color: var(--text-muted);">お好みのRSSリーダーで購読できます</p>
   <div class="feed-links">
-    <a href="/feeds/all.xml" class="feed-link">全体フィード (RSS)</a>
+    <a href="/custom-rss/feeds/all.xml" class="feed-link">全体フィード (RSS)</a>
     {% for category in feed.categories %}
-    <a href="/feeds/{{ category.id }}.xml" class="feed-link secondary">{{ category.label }}</a>
+    <a href="/custom-rss/feeds/{{ category.id }}.xml" class="feed-link secondary">{{ category.label }}</a>
     {% endfor %}
   </div>
 </div>
@@ -40,7 +40,7 @@ title: ホーム
   <div class="card">
     <h2>
       {{ category.label }}
-      <a href="/feeds/{{ category.id }}.xml">RSS</a>
+      <a href="/custom-rss/feeds/{{ category.id }}.xml">RSS</a>
     </h2>
     <ul class="article-list">
       {% for article in feed.articlesByCategory[category.id] %}
