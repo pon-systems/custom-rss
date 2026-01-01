@@ -2,7 +2,7 @@ import { Feed } from 'feed';
 import type { Article } from './feed-fetcher.js';
 import type { FeedInfo } from '../resources/security-feed-list.js';
 
-const SITE_URL = 'https://your-username.github.io/security-rss-feed';
+const SITE_URL = 'https://pon-systems.github.io/custom-rss';
 const SITE_TITLE = 'セキュリティ情報フィード';
 const SITE_DESCRIPTION = 'セキュリティ関連記事を収集したRSSフィード';
 
