@@ -1,32 +1,43 @@
-# セキュリティ情報RSSフィード
+# カスタムRSSフィード
 
-セキュリティ関連記事を自動収集してカスタムRSSフィードを生成するシステムです。
+各種情報を自動収集してカスタムRSSフィードを生成するシステムです。
 
 GitHub ActionsとGitHub Pagesを使用した完全無料のサーバーレス構成で運用できます。
 
-## 機能
+## 公開URL
 
-- 複数のセキュリティ情報源からRSSフィードを自動収集
-- カテゴリ別（公的機関、ベンダー、コミュニティ、海外）にフィードを分類
-- 記事タイトルに情報源を付与して一目で識別可能
-- レスポンシブ対応のWebページで最新記事を確認
+https://pon-systems.github.io/custom-rss/
 
-## 情報源
+## 利用可能なフィード
 
-### 公的機関
+### セキュリティ情報フィード
+
+セキュリティ関連記事を収集したRSSフィードです。
+
+| フィード | URL |
+|---------|-----|
+| 全体フィード | `/custom-rss/security/feeds/all.xml` |
+| 公的機関 | `/custom-rss/security/feeds/official.xml` |
+| ベンダー | `/custom-rss/security/feeds/vendor.xml` |
+| コミュニティ | `/custom-rss/security/feeds/community.xml` |
+| 海外情報 | `/custom-rss/security/feeds/international.xml` |
+
+#### 情報源
+
+**公的機関**
 - IPA 重要なセキュリティ情報
-- IPA 新着情報
 - JPCERT/CC
 
-### コミュニティ
+**コミュニティ**
 - Qiita - セキュリティ
 - Zenn - セキュリティ
 - はてなブックマーク - セキュリティ
 
-### ベンダー
-- トレンドマイクロ セキュリティブログ
+**ベンダー**
+- トレンドマイクロ ウイルス解析ブログ
+- トレンドマイクロ セキュリティホール情報
 
-### 海外
+**海外**
 - The Hacker News
 - Krebs on Security
 
@@ -40,8 +51,8 @@ GitHub ActionsとGitHub Pagesを使用した完全無料のサーバーレス構
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/your-username/security-rss-feed.git
-cd security-rss-feed
+git clone https://github.com/pon-systems/custom-rss.git
+cd custom-rss
 
 # 依存関係をインストール
 npm install
@@ -54,7 +65,7 @@ npm install
 npm run dev
 ```
 
-ブラウザで http://localhost:8080 を開くとサイトを確認できます。
+ブラウザで http://localhost:8080/custom-rss/ を開くとサイトを確認できます。
 
 ### ビルドのみ
 
@@ -82,43 +93,33 @@ GitHub Actionsにより自動更新されます：
 ## プロジェクト構造
 
 ```
-security-rss-feed/
+custom-rss/
 ├── .github/
 │   └── workflows/
-│       └── generate-feed.yml    # 定期実行ワークフロー
+│       └── generate-feed.yml      # 定期実行ワークフロー
 ├── src/
 │   ├── resources/
-│   │   └── security-feed-list.ts  # フィード情報一覧
+│   │   └── security-feed-list.ts  # セキュリティフィード情報一覧
 │   ├── lib/
-│   │   ├── feed-fetcher.ts      # RSS取得処理
-│   │   └── feed-generator.ts    # 統合RSS生成
+│   │   ├── feed-fetcher.ts        # RSS取得処理
+│   │   └── feed-generator.ts      # 統合RSS生成
 │   ├── scripts/
-│   │   └── generate-feeds.ts    # メインスクリプト
+│   │   └── generate-feeds.ts      # メインスクリプト
 │   └── site/
-│       ├── index.njk            # トップページ
-│       ├── feeds/
-│       │   └── index.njk        # フィード一覧
+│       ├── index.njk              # トップページ
+│       ├── security/              # セキュリティフィード
+│       │   ├── index.njk          # セキュリティトップ
+│       │   └── feeds/
+│       │       └── index.njk      # フィード一覧
 │       ├── _includes/
-│       │   └── layout.njk       # 共通レイアウト
+│       │   └── layout.njk         # 共通レイアウト
 │       └── _data/
-│           └── feed.json        # 生成されたデータ
+│           └── feed.json          # 生成されたデータ
 ├── package.json
 ├── tsconfig.json
 ├── eleventy.config.ts
 └── README.md
 ```
-
-## RSSフィード
-
-以下のRSSフィードが利用可能です：
-
-| フィード | 説明 |
-|---------|------|
-| `/feeds/all.xml` | 全体フィード（最新100件） |
-| `/feeds/official.xml` | 公的機関フィード |
-| `/feeds/vendor.xml` | ベンダーフィード |
-| `/feeds/community.xml` | コミュニティフィード |
-| `/feeds/international.xml` | 海外情報フィード |
 
 ## カスタマイズ
 
@@ -138,6 +139,12 @@ export const SECURITY_FEED_LIST: FeedInfo[] = [
 ];
 ```
 
+### 新しいフィードカテゴリの追加
+
+1. `src/site/` 配下に新しいディレクトリを作成
+2. 対応するスクリプトとテンプレートを追加
+3. `eleventy.config.ts` の `addPassthroughCopy` を更新
+
 ### 更新スケジュールの変更
 
 `.github/workflows/generate-feed.yml` のcron設定を編集してください。
@@ -145,7 +152,7 @@ export const SECURITY_FEED_LIST: FeedInfo[] = [
 ## 技術スタック
 
 - **言語**: TypeScript / Node.js 20
-- **静的サイトジェネレータ**: Eleventy (11ty)
+- **静的サイトジェネレータ**: Eleventy (11ty) 3.x
 - **RSS処理**: rss-parser, feed
 - **自動化**: GitHub Actions
 - **ホスティング**: GitHub Pages
