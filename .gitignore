@@ -7,7 +7,7 @@ dist/
 
 # Generated data (regenerated on each build)
 src/site/_data/feed.json
-src/site/feeds/*.xml
+src/site/**/feeds/*.xml
 
 # IDE
 .vscode/

@@ -4,57 +4,14 @@ title: ホーム
 ---
 
 <div class="card">
-  <h2>RSSフィードを購読</h2>
-  <p style="margin-bottom: 1rem; color: var(--text-muted);">お好みのRSSリーダーで購読できます</p>
-  <div class="feed-links">
-    <a href="/custom-rss/feeds/all.xml" class="feed-link">全体フィード (RSS)</a>
-    {% for category in feed.categories %}
-    <a href="/custom-rss/feeds/{{ category.id }}.xml" class="feed-link secondary">{{ category.label }}</a>
-    {% endfor %}
-  </div>
-</div>
+  <h2>カスタムRSSフィード</h2>
+  <p style="margin-bottom: 1rem; color: var(--text-muted);">各種情報を自動収集してRSSフィードを生成しています。</p>
 
-<div class="card">
-  <h2>
-    最新記事
-    <span style="font-size: 0.875rem; font-weight: normal; color: var(--text-muted);">全{{ feed.totalArticles }}件</span>
-  </h2>
-  <ul class="article-list">
-    {% for article in feed.latestArticles %}
-    <li class="article-item">
-      <div class="article-title">
-        <a href="{{ article.link }}" target="_blank" rel="noopener">{{ article.title }}</a>
-      </div>
-      <div class="article-meta">
-        <span class="article-source">{{ article.source }}</span>
-        <span>{{ article.pubDate | shortDate }}</span>
-      </div>
+  <h3 style="margin-top: 1.5rem; margin-bottom: 0.75rem;">利用可能なフィード</h3>
+  <ul style="list-style: none;">
+    <li style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+      <a href="/custom-rss/security/" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">セキュリティ情報フィード</a>
+      <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">IPA、JPCERT/CC、各種セキュリティブログからの情報を収集</p>
     </li>
-    {% endfor %}
   </ul>
-</div>
-
-<h2 style="margin-bottom: 1rem;">カテゴリ別</h2>
-<div class="grid">
-  {% for category in feed.categories %}
-  <div class="card">
-    <h2>
-      {{ category.label }}
-      <a href="/custom-rss/feeds/{{ category.id }}.xml">RSS</a>
-    </h2>
-    <ul class="article-list">
-      {% for article in feed.articlesByCategory[category.id] %}
-      <li class="article-item">
-        <div class="article-title">
-          <a href="{{ article.link }}" target="_blank" rel="noopener">{{ article.title | truncate(60) }}</a>
-        </div>
-        <div class="article-meta">
-          <span class="article-source">{{ article.source }}</span>
-          <span>{{ article.pubDate | shortDate }}</span>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
-  {% endfor %}
 </div>

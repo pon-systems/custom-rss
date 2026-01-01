@@ -8,7 +8,7 @@ import { SECURITY_FEED_LIST, CATEGORY_LABELS, type FeedInfo } from '../resources
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, '../..');
-const OUTPUT_DIR = path.join(PROJECT_ROOT, 'src/site/feeds');
+const OUTPUT_DIR = path.join(PROJECT_ROOT, 'src/site/security/feeds');
 const DATA_DIR = path.join(PROJECT_ROOT, 'src/site/_data');
 
 async function main() {

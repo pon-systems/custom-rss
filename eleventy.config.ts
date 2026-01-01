@@ -2,7 +2,7 @@ import type { UserConfig } from '@11ty/eleventy';
 
 export default function (eleventyConfig: UserConfig) {
   // 静的ファイルをコピー
-  eleventyConfig.addPassthroughCopy({ 'src/site/feeds/*.xml': 'feeds' });
+  eleventyConfig.addPassthroughCopy({ 'src/site/security/feeds/*.xml': 'security/feeds' });
 
   // 日付フォーマットフィルター
   eleventyConfig.addFilter('formatDate', (dateString: string) => {
