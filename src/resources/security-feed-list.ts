@@ -67,6 +67,54 @@ export const SECURITY_FEED_LIST: FeedInfo[] = [
     feedUrl: 'https://krebsonsecurity.com/feed/',
     category: 'international',
   },
+  {
+    name: 'Help Net Security',
+    url: 'https://www.helpnetsecurity.com/',
+    feedUrl: 'https://www.helpnetsecurity.com/feed/',
+    category: 'international',
+  },
+  {
+    name: 'BleepingComputer',
+    url: 'https://www.bleepingcomputer.com/',
+    feedUrl: 'https://www.bleepingcomputer.com/feed/',
+    category: 'international',
+  },
+  {
+    name: 'Infosecurity Magazine',
+    url: 'https://www.infosecurity-magazine.com/',
+    feedUrl: 'https://www.infosecurity-magazine.com/rss/news/',
+    category: 'international',
+  },
+  {
+    name: 'Security Boulevard',
+    url: 'https://securityboulevard.com/',
+    feedUrl: 'https://securityboulevard.com/feed/',
+    category: 'international',
+  },
+  {
+    name: 'The Record',
+    url: 'https://therecord.media/',
+    feedUrl: 'https://therecord.media/feed/',
+    category: 'international',
+  },
+  {
+    name: 'Dark Reading',
+    url: 'https://www.darkreading.com/',
+    feedUrl: 'https://www.darkreading.com/rss.xml',
+    category: 'international',
+  },
+  {
+    name: 'The Register - Security',
+    url: 'https://www.theregister.com/security/',
+    feedUrl: 'https://www.theregister.com/security/headlines.atom',
+    category: 'international',
+  },
+  {
+    name: 'Security Affairs',
+    url: 'https://securityaffairs.com/',
+    feedUrl: 'https://securityaffairs.com/feed',
+    category: 'international',
+  },
 ];
 
 export const CATEGORY_LABELS: Record<FeedInfo['category'], string> = {
