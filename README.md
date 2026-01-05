@@ -40,6 +40,14 @@ https://pon-systems.github.io/custom-rss/
 **海外**
 - The Hacker News
 - Krebs on Security
+- Help Net Security
+- BleepingComputer
+- Infosecurity Magazine
+- Security Boulevard
+- The Record
+- Dark Reading
+- The Register - Security
+- Security Affairs
 
 ## セットアップ
 
