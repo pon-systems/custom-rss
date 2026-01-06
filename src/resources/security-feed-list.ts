@@ -2,7 +2,7 @@ export interface FeedInfo {
   name: string;
   url: string;
   feedUrl: string;
-  category: 'official' | 'vendor' | 'community' | 'international';
+  category: 'official' | 'vendor' | 'community' | 'international' | 'media';
 }
 
 export const SECURITY_FEED_LIST: FeedInfo[] = [
@@ -115,6 +115,32 @@ export const SECURITY_FEED_LIST: FeedInfo[] = [
     feedUrl: 'https://securityaffairs.com/feed',
     category: 'international',
   },
+
+  // 国内メディア
+  {
+    name: 'ITmedia NEWS - セキュリティ',
+    url: 'https://www.itmedia.co.jp/news/subtop/security/',
+    feedUrl: 'https://rss.itmedia.co.jp/rss/2.0/news_security.xml',
+    category: 'media',
+  },
+  {
+    name: 'ScanNetSecurity',
+    url: 'https://scan.netsecurity.ne.jp/',
+    feedUrl: 'https://scan.netsecurity.ne.jp/rss/index.rdf',
+    category: 'media',
+  },
+  {
+    name: 'Security NEXT',
+    url: 'https://www.security-next.com/',
+    feedUrl: 'https://www.security-next.com/feed',
+    category: 'media',
+  },
+  {
+    name: 'GIGAZINE',
+    url: 'https://gigazine.net/',
+    feedUrl: 'https://gigazine.net/news/rss_2.0/',
+    category: 'media',
+  },
 ];
 
 export const CATEGORY_LABELS: Record<FeedInfo['category'], string> = {
@@ -122,4 +148,5 @@ export const CATEGORY_LABELS: Record<FeedInfo['category'], string> = {
   vendor: 'ベンダー',
   community: 'コミュニティ',
   international: '海外情報',
+  media: '国内メディア',
 };

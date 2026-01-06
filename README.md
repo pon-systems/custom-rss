@@ -21,6 +21,7 @@ https://pon-systems.github.io/custom-rss/
 | ベンダー | `/custom-rss/security/feeds/vendor.xml` |
 | コミュニティ | `/custom-rss/security/feeds/community.xml` |
 | 海外情報 | `/custom-rss/security/feeds/international.xml` |
+| 国内メディア | `/custom-rss/security/feeds/media.xml` |
 
 #### 情報源
 
@@ -48,6 +49,12 @@ https://pon-systems.github.io/custom-rss/
 - Dark Reading
 - The Register - Security
 - Security Affairs
+
+**国内メディア**
+- ITmedia NEWS - セキュリティ
+- ScanNetSecurity
+- Security NEXT
+- GIGAZINE
 
 ## セットアップ
 
@@ -141,7 +148,7 @@ export const SECURITY_FEED_LIST: FeedInfo[] = [
     name: 'フィード名',
     url: 'サイトURL',
     feedUrl: 'RSSフィードURL',
-    category: 'official' | 'vendor' | 'community' | 'international',
+    category: 'official' | 'vendor' | 'community' | 'international' | 'media',
   },
   // ...
 ];

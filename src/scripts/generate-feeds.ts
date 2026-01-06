@@ -30,7 +30,7 @@ async function main() {
   console.log('  -> all.xml created');
 
   // カテゴリ別フィードを生成
-  const categories: FeedInfo['category'][] = ['official', 'vendor', 'community', 'international'];
+  const categories: FeedInfo['category'][] = ['official', 'vendor', 'community', 'international', 'media'];
   for (const category of categories) {
     console.log(`Generating ${category} feed...`);
     const categoryFeed = generateCategoryFeed(articles, category, CATEGORY_LABELS[category]);
