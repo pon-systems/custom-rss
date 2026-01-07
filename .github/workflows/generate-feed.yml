@@ -39,6 +39,9 @@ jobs:
 
       - name: Generate feeds
         run: npm run feed-generate
+        env:
+          LLM_GATEWAY_API_KEY: ${{ secrets.LLM_GATEWAY_API_KEY }}
+          LLM_GATEWAY_BASE_URL: ${{ secrets.LLM_GATEWAY_BASE_URL }}
 
       - name: Build site
         run: npm run site-build

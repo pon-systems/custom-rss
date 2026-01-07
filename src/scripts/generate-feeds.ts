@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchAllFeeds } from '../lib/feed-fetcher.js';
 import { generateAllFeed, generateCategoryFeed } from '../lib/feed-generator.js';
+import { translateArticles } from '../lib/translator.js';
 import { SECURITY_FEED_LIST, CATEGORY_LABELS, type FeedInfo } from '../resources/security-feed-list.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,13 +20,30 @@ async function main() {
   const articles = await fetchAllFeeds(SECURITY_FEED_LIST);
   console.log(`\nTotal articles: ${articles.length}\n`);
 
+  // 英語記事を翻訳
+  const translatorConfig = {
+    apiKey: process.env.LLM_GATEWAY_API_KEY || '',
+    baseUrl: process.env.LLM_GATEWAY_BASE_URL || '',
+    model: process.env.LLM_GATEWAY_MODEL || 'claude-haiku-4-5',
+    maxConcurrent: 5,
+  };
+
+  let translatedArticles = articles;
+  if (translatorConfig.apiKey && translatorConfig.baseUrl) {
+    console.log('Translating English articles...');
+    translatedArticles = await translateArticles(articles, translatorConfig);
+    console.log('Translation completed.\n');
+  } else {
+    console.log('LLM_GATEWAY_API_KEY or LLM_GATEWAY_BASE_URL not set, skipping translation.\n');
+  }
+
   // 出力ディレクトリを作成
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   fs.mkdirSync(DATA_DIR, { recursive: true });
 
   // 全体フィードを生成
   console.log('Generating all feed...');
-  const allFeed = generateAllFeed(articles);
+  const allFeed = generateAllFeed(translatedArticles);
   fs.writeFileSync(path.join(OUTPUT_DIR, 'all.xml'), allFeed.rss);
   console.log('  -> all.xml created');
 
@@ -33,7 +51,7 @@ async function main() {
   const categories: FeedInfo['category'][] = ['official', 'vendor', 'community', 'international', 'media'];
   for (const category of categories) {
     console.log(`Generating ${category} feed...`);
-    const categoryFeed = generateCategoryFeed(articles, category, CATEGORY_LABELS[category]);
+    const categoryFeed = generateCategoryFeed(translatedArticles, category, CATEGORY_LABELS[category]);
     fs.writeFileSync(path.join(OUTPUT_DIR, `${category}.xml`), categoryFeed.rss);
     console.log(`  -> ${category}.xml created`);
   }
@@ -42,22 +60,22 @@ async function main() {
   console.log('\nGenerating data files for Eleventy...');
 
   // カテゴリ別に記事をグループ化
-  const articlesByCategory: Record<string, typeof articles> = {};
+  const articlesByCategory: Record<string, typeof translatedArticles> = {};
   for (const category of categories) {
-    articlesByCategory[category] = articles
+    articlesByCategory[category] = translatedArticles
       .filter((a) => a.category === category)
       .slice(0, 10);
   }
 
   const siteData = {
     generatedAt: new Date().toISOString(),
-    totalArticles: articles.length,
+    totalArticles: translatedArticles.length,
     categories: categories.map((cat) => ({
       id: cat,
       label: CATEGORY_LABELS[cat],
-      articleCount: articles.filter((a) => a.category === cat).length,
+      articleCount: translatedArticles.filter((a) => a.category === cat).length,
     })),
-    latestArticles: articles.slice(0, 20).map((a) => ({
+    latestArticles: translatedArticles.slice(0, 20).map((a) => ({
       ...a,
       pubDate: a.pubDate.toISOString(),
       categoryLabel: CATEGORY_LABELS[a.category],
