@@ -113,8 +113,7 @@ npm run build
 ### 更新スケジュール
 
 GitHub Actionsにより自動更新されます：
-- 平日 8:00-24:00 (JST): 1時間ごと
-- 休日 8:00-24:00 (JST): 2時間ごと
+- 毎日 18:00 (JST) に自動実行
 
 手動で更新する場合は、Actions タブから「Generate Feed and Deploy」を手動実行できます。
 
