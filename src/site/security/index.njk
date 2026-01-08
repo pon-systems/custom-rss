@@ -1,6 +1,19 @@
 ---
 layout: layout.njk
 title: セキュリティ情報
+scripts: |
+  <script>
+    let paginator;
+    document.addEventListener('DOMContentLoaded', function() {
+      paginator = new ArticlePaginator({
+        containerId: 'latest-articles-list',
+        paginationId: 'latest-articles-pagination',
+        dataUrl: '/custom-rss/security/data/articles-all.json',
+        itemsPerPage: 20
+      });
+      paginator.init();
+    });
+  </script>
 ---
 
 <div class="card">
@@ -19,7 +32,7 @@ title: セキュリティ情報
     最新記事
     <span style="font-size: 0.875rem; font-weight: normal; color: var(--text-muted);">全{{ feed.totalArticles }}件</span>
   </h2>
-  <ul class="article-list">
+  <ul class="article-list" id="latest-articles-list">
     {% for article in feed.latestArticles %}
     <li class="article-item">
       <div class="article-title">
@@ -32,6 +45,7 @@ title: セキュリティ情報
     </li>
     {% endfor %}
   </ul>
+  <div id="latest-articles-pagination"></div>
 </div>
 
 <h2 style="margin-bottom: 1rem;">カテゴリ別</h2>
@@ -40,7 +54,10 @@ title: セキュリティ情報
   <div class="card">
     <h2>
       {{ category.label }}
-      <a href="/custom-rss/security/feeds/{{ category.id }}.xml">RSS</a>
+      <span>
+        <a href="/custom-rss/security/category/{{ category.id }}/" style="margin-right: 0.5rem;">全記事</a>
+        <a href="/custom-rss/security/feeds/{{ category.id }}.xml">RSS</a>
+      </span>
     </h2>
     <ul class="article-list">
       {% for article in feed.articlesByCategory[category.id] %}
@@ -55,6 +72,11 @@ title: セキュリティ情報
       </li>
       {% endfor %}
     </ul>
+    <p style="text-align: center; margin-top: 1rem;">
+      <a href="/custom-rss/security/category/{{ category.id }}/" style="color: var(--primary-color);">
+        全{{ category.articleCount }}件を見る →
+      </a>
+    </p>
   </div>
   {% endfor %}
 </div>

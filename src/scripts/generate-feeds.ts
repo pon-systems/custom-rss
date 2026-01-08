@@ -11,6 +11,7 @@ const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, '../..');
 const OUTPUT_DIR = path.join(PROJECT_ROOT, 'src/site/security/feeds');
 const DATA_DIR = path.join(PROJECT_ROOT, 'src/site/_data');
+const PAGINATION_DATA_DIR = path.join(PROJECT_ROOT, 'src/site/security/data');
 
 async function main() {
   console.log('=== Security RSS Feed Generator ===\n');
@@ -98,6 +99,35 @@ async function main() {
 
   fs.writeFileSync(path.join(DATA_DIR, 'feed.json'), JSON.stringify(siteData, null, 2));
   console.log('  -> feed.json created');
+
+  // ページング用JSONファイルを生成
+  console.log('\nGenerating pagination data files...');
+  fs.mkdirSync(PAGINATION_DATA_DIR, { recursive: true });
+
+  // 全記事JSON
+  const allArticlesData = translatedArticles.map((a) => ({
+    title: a.title,
+    link: a.link,
+    pubDate: a.pubDate.toISOString(),
+    source: a.source,
+    category: a.category,
+    categoryLabel: CATEGORY_LABELS[a.category],
+  }));
+  fs.writeFileSync(
+    path.join(PAGINATION_DATA_DIR, 'articles-all.json'),
+    JSON.stringify(allArticlesData)
+  );
+  console.log('  -> articles-all.json created');
+
+  // カテゴリ別JSON
+  for (const category of categories) {
+    const categoryArticles = allArticlesData.filter((a) => a.category === category);
+    fs.writeFileSync(
+      path.join(PAGINATION_DATA_DIR, `articles-${category}.json`),
+      JSON.stringify(categoryArticles)
+    );
+    console.log(`  -> articles-${category}.json created`);
+  }
 
   console.log('\n=== Feed generation completed! ===');
 }

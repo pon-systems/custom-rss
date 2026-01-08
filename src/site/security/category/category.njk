@@ -1,0 +1,52 @@
+---
+pagination:
+  data: feed.categories
+  size: 1
+  alias: category
+permalink: "security/category/{{ category.id }}/index.html"
+layout: layout.njk
+eleventyComputed:
+  title: "{{ category.label }} - セキュリティ情報"
+  scripts: |
+    <script>
+      let paginator;
+      document.addEventListener('DOMContentLoaded', function() {
+        paginator = new ArticlePaginator({
+          containerId: 'category-articles-list',
+          paginationId: 'category-articles-pagination',
+          dataUrl: '/custom-rss/security/data/articles-{{ category.id }}.json',
+          itemsPerPage: 20
+        });
+        paginator.init();
+      });
+    </script>
+---
+
+<nav style="margin-bottom: 1rem;">
+  <a href="/custom-rss/security/" style="color: var(--primary-color);">← セキュリティ情報に戻る</a>
+</nav>
+
+<div class="card">
+  <h2>
+    {{ category.label }}
+    <a href="/custom-rss/security/feeds/{{ category.id }}.xml" class="feed-link secondary" style="font-size: 0.875rem;">RSS</a>
+  </h2>
+  <p style="margin-bottom: 1rem; color: var(--text-muted);">
+    全{{ category.articleCount }}件の記事
+  </p>
+
+  <ul class="article-list" id="category-articles-list">
+    {% for article in feed.articlesByCategory[category.id] %}
+    <li class="article-item">
+      <div class="article-title">
+        <a href="{{ article.link }}" target="_blank" rel="noopener">{{ article.title }}</a>
+      </div>
+      <div class="article-meta">
+        <span class="article-source">{{ article.source }}</span>
+        <span>{{ article.pubDate | shortDate }}</span>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+  <div id="category-articles-pagination"></div>
+</div>
