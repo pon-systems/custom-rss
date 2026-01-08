@@ -23,6 +23,19 @@ https://pon-systems.github.io/custom-rss/
 | 海外情報 | `/custom-rss/security/feeds/international.xml` |
 | 国内メディア | `/custom-rss/security/feeds/media.xml` |
 
+#### Webページ
+
+記事一覧をブラウザで閲覧できます。ページング機能付きで全件表示可能です。
+
+| ページ | URL |
+|--------|-----|
+| セキュリティトップ | `/custom-rss/security/` |
+| 公的機関 | `/custom-rss/security/category/official/` |
+| ベンダー | `/custom-rss/security/category/vendor/` |
+| コミュニティ | `/custom-rss/security/category/community/` |
+| 海外情報 | `/custom-rss/security/category/international/` |
+| 国内メディア | `/custom-rss/security/category/media/` |
+
 #### 情報源
 
 **公的機関**
@@ -117,13 +130,20 @@ custom-rss/
 │   │   └── security-feed-list.ts  # セキュリティフィード情報一覧
 │   ├── lib/
 │   │   ├── feed-fetcher.ts        # RSS取得処理
-│   │   └── feed-generator.ts      # 統合RSS生成
+│   │   ├── feed-generator.ts      # 統合RSS生成
+│   │   └── translator.ts          # 英語記事翻訳処理
 │   ├── scripts/
 │   │   └── generate-feeds.ts      # メインスクリプト
 │   └── site/
 │       ├── index.njk              # トップページ
+│       ├── assets/
+│       │   └── js/
+│       │       └── pagination.js  # ページング機能
 │       ├── security/              # セキュリティフィード
 │       │   ├── index.njk          # セキュリティトップ
+│       │   ├── category/
+│       │   │   └── category.njk   # カテゴリ別ページ
+│       │   ├── data/              # ページング用JSONデータ
 │       │   └── feeds/
 │       │       └── index.njk      # フィード一覧
 │       ├── _includes/
