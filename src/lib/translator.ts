@@ -1,12 +1,56 @@
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import OpenAI from 'openai';
 import pLimit from 'p-limit';
 import type { Article } from './feed-fetcher.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PROJECT_ROOT = path.resolve(__dirname, '../..');
+const CACHE_FILE = path.join(PROJECT_ROOT, '.cache/translation-cache.json');
 
 export interface TranslatorConfig {
   apiKey: string;
   baseUrl: string;
   model: string;
   maxConcurrent: number;
+}
+
+interface CacheEntry {
+  title: string;
+  content: string;
+  translatedAt: string;
+}
+
+type TranslationCache = Record<string, CacheEntry>;
+
+/**
+ * キャッシュを読み込む
+ */
+export function loadCache(): TranslationCache {
+  try {
+    if (fs.existsSync(CACHE_FILE)) {
+      const data = fs.readFileSync(CACHE_FILE, 'utf-8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Failed to load cache:', error instanceof Error ? error.message : error);
+  }
+  return {};
+}
+
+/**
+ * キャッシュを保存する
+ */
+export function saveCache(cache: TranslationCache): void {
+  try {
+    const cacheDir = path.dirname(CACHE_FILE);
+    fs.mkdirSync(cacheDir, { recursive: true });
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
+  } catch (error) {
+    console.error('Failed to save cache:', error instanceof Error ? error.message : error);
+  }
 }
 
 /**
@@ -33,7 +77,7 @@ export function isEnglishContent(text: string): boolean {
 }
 
 /**
- * 記事を翻訳する
+ * 記事を翻訳する（キャッシュ対応）
  */
 export async function translateArticles(
   articles: Article[],
@@ -44,14 +88,27 @@ export async function translateArticles(
     baseURL: config.baseUrl,
   });
 
+  const cache = loadCache();
   const limit = pLimit(config.maxConcurrent);
   let translatedCount = 0;
+  let cacheHitCount = 0;
 
   const translationPromises = articles.map((article) =>
     limit(async () => {
       const textToCheck = article.title + ' ' + article.content;
       if (!isEnglishContent(textToCheck)) {
         return article; // 日本語記事はそのまま
+      }
+
+      // キャッシュをチェック
+      const cacheKey = article.link;
+      if (cache[cacheKey]) {
+        cacheHitCount++;
+        return {
+          ...article,
+          title: cache[cacheKey].title,
+          content: cache[cacheKey].content,
+        };
       }
 
       try {
@@ -87,6 +144,13 @@ JSON形式で返答: {"title": "翻訳されたタイトル", "content": "翻訳
         const parsed = JSON.parse(jsonMatch[0]);
         translatedCount++;
 
+        // キャッシュに保存
+        cache[cacheKey] = {
+          title: parsed.title || article.title,
+          content: parsed.content || article.content,
+          translatedAt: new Date().toISOString(),
+        };
+
         return {
           ...article,
           title: parsed.title || article.title,
@@ -100,6 +164,10 @@ JSON形式で返答: {"title": "翻訳されたタイトル", "content": "翻訳
   );
 
   const result = await Promise.all(translationPromises);
-  console.log(`  -> ${translatedCount} articles translated`);
+
+  // キャッシュを保存
+  saveCache(cache);
+
+  console.log(`  -> ${translatedCount} articles translated (${cacheHitCount} from cache)`);
   return result;
 }
