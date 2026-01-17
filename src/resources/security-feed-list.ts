@@ -33,12 +33,6 @@ export const SECURITY_FEED_LIST: FeedInfo[] = [
     feedUrl: 'https://zenn.dev/topics/security/feed',
     category: 'community',
   },
-  {
-    name: 'はてブ - セキュリティ',
-    url: 'https://b.hatena.ne.jp/',
-    feedUrl: 'https://b.hatena.ne.jp/search/text?q=%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3&mode=rss',
-    category: 'community',
-  },
 
   // ベンダー
   {
